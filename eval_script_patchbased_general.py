@@ -53,6 +53,5 @@ aug_fn_arg = (aug.no_aug, {})
 
 eval_helper.evaluate_network(eval_imdb, model_name, network_folder,
                              batch_size, save_parameters.SaveParameters(pngimages=True, raw_image=True, temp_extra=True, boundary_maps=True, area_maps=True, comb_area_maps=True, seg_plot=True),
-                             gsgrad=GSGRAD, aug_fn_arg=aug_fn_arg, comb_pred=False,
-                             eval_mode='both', recalc_errors=False, boundaries=True, boundary_errors=True, dice_errors=False, col_error_range=None, normalise_input=True, transpose=False)
+                             gsgrad=GSGRAD, aug_fn_arg=aug_fn_arg, eval_mode='both', boundaries=True, boundary_errors=True, dice_errors=False, col_error_range=None, normalise_input=True, transpose=False)
 
