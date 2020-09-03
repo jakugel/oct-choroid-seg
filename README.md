@@ -51,3 +51,7 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
 3. Specify filename of model to evaluate within the chosen folder: *model_epoch&.hdf5*
 4. Run *eval_script_semantic_general.py*
 5. Evaluation results will be saved in a new folder (with the name *no_aug_<DATASET_NAME>.hdf5*) within the specified trained network folder. Within this, a folder is created for each evaluated image containing a range of .png images illustrating the results qualitatively as well as an *evaluations.hdf5* file with all quantitative results. A new *config.hdf5* file is created in the new folder as well as *results.hdf5* and *results.csv* files summarising the overall results after all images have been evaluated.
+
+# Still to be added
+* *RNN bottleneck* and *Combined* semantic network models
+* Code and instructions for preprocessing using contrast enhancement (Girard filter)
