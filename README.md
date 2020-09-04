@@ -7,6 +7,7 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
 * tensorflow-gpu 1.8.0
 * h5py
 * Matplotlib
+* numpy
 
 # Training a model (patch-based)
 1. Modify *load_training_data* and *load_validation_data* functions in *train_script_patchbased_general.py* to load your training and validation data (see comments in code).
