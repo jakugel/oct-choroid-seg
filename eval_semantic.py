@@ -2,11 +2,8 @@ import data_generator
 import eval_helper
 import numpy as np
 from keras.utils import to_categorical
-from keras import backend as K
 import image_database as image_db
 import time
-import augmentation as aug
-import graph_search
 from keras.models import Model
 import evaluation_output as eoutput
 

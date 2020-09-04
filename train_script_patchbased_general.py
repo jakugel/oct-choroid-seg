@@ -5,7 +5,6 @@ import image_database as imdb
 import patch_based_network_models as patch_models
 import dataset_construction
 from keras.layers.cudnn_recurrent import CuDNNLSTM, CuDNNGRU
-import dataset_load
 
 keras.backend.set_image_dim_ordering('tf')
 
