@@ -22,7 +22,7 @@ If the code and methods here are useful to you and aided in your research, pleas
 3. Can change the desired patch size (*PATCH_SIZE*) as well as the name of your dataset (*DATASET_NAME*).
 4. Run *train_script_patchbased_general.py*
 5. Training results will be saved in the location defined by *parameters.RESULTS_LOCATION*. Each new training run will be saved in a new seperate folder named with the format: 
-*<TIMESTAMP>_<MODEL_NAME>_<DATASET_NAME>*. Each folder will contain the following files:
+<TIMESTAMP>_<MODEL_NAME>_<DATASET_NAME>. Each folder will contain the following files:
     * *config.hdf5* (summary of parameters used for training)
     * *stats_epoch#.hdf5* (training and validation results for each epoch up to epoch #)
     * one or more *model_epoch&.hdf5* files containing the saved model at each epoch &
@@ -38,7 +38,7 @@ If the code and methods here are useful to you and aided in your research, pleas
 3. Can change the name of your dataset (*DATASET_NAME*).
 4. Run *train_script_semantic_general.py*
 5. Training results will be saved in the location defined by *parameters.RESULTS_LOCATION*. Each new training run will be saved in a new seperate folder named with the format: 
-*<TIMESTAMP>_<MODEL_NAME>_<DATASET_NAME>*. Each folder will contain the following files:
+<TIMESTAMP>_<MODEL_NAME>_<DATASET_NAME>. Each folder will contain the following files:
     * *config.hdf5* (summary of parameters used for training)
     * *stats_epoch#.hdf5* (training and validation results for each epoch up to epoch #)
     * one or more *model_epoch&.hdf5* files containing the saved model at each epoch &
