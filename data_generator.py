@@ -274,6 +274,7 @@ class BatchGenerator:
                 # labels are masks
                 batch_labels = np.transpose(batch_labels, axes=(0, 2, 1, 3))
 
+
         return [batch_images, batch_labels]
 
     def handle_epoch_end(self):

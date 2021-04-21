@@ -74,7 +74,7 @@ def residual_block(block_input, num_filters, conv_layers=2, block_type=3):
 def cse_block(inp, ratio=2):
     init = inp
     channel_axis = 1 if K.image_data_format() == "channels_first" else -1
-    filters = init._keras_shape[channel_axis]
+    filters = init.shape[channel_axis]
     se_shape = (1, 1, filters)
 
     se = GlobalAveragePooling2D()(init)
@@ -180,7 +180,7 @@ def resnet_dec_block(inp, size, concat_map, enc_kernel=(3, 3), dec_kernel=(2, 2)
 
 # TODO extend generic unet to allow for dropout parameter (separate dropout in bottleneck and dropout per pooling layer)
 def unet(start_neurons, pool_layers, conv_layers, enc_kernel, dec_kernel, input_channels, output_channels, se=None, cSE_ratio=2, pool='max', width=None, height=None):
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         inp = Input(batch_shape=(None, width, height, input_channels))
     else:
         inp = Input(batch_shape=(None, input_channels, width, height))
@@ -221,9 +221,9 @@ def unet(start_neurons, pool_layers, conv_layers, enc_kernel, dec_kernel, input_
 
 
 def resnet(start_neurons, pool_layers, block_layers, res_layers, enc_kernel, dec_kernel, input_channels,
-           output_channels, se=None, cSE_ratio=2, skip_type='concat', type='standard', pool='max', pyramid_bin_sizes=None, pyramid_reduction_factors=None,
+           output_channels, se=None, cSE_ratio=2, skip_type='concat', pool='max', pyramid_bin_sizes=None, pyramid_reduction_factors=None,
            width=None, height=None):
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         inp = Input(batch_shape=(None, width, height, input_channels))
     else:
         inp = Input(batch_shape=(None, input_channels, width, height))
@@ -234,34 +234,34 @@ def resnet(start_neurons, pool_layers, block_layers, res_layers, enc_kernel, dec
 
     for i in range(pool_layers):
         [x, c] = resnet_enc_block(x, start_neurons * (2 ** i), enc_kernel=enc_kernel, block_layers=block_layers,
-                                  res_layers=res_layers, se=se, type=type, cSE_ratio=cSE_ratio, pool=pool)
+                                  res_layers=res_layers, se=se, cSE_ratio=cSE_ratio, pool=pool)
 
         enc.append(c)
 
     [x, _] = resnet_enc_block(x, start_neurons * (2 ** pool_layers), enc_kernel=enc_kernel, block_layers=block_layers,
-                              res_layers=res_layers, pool=False, type=type)
+                              res_layers=res_layers, pool=False)
     x = Dropout(0.5)(x)
 
     for i in range(pool_layers):
         x = resnet_dec_block(x, start_neurons * (2 ** (pool_layers - 1 - i)), enc[pool_layers - 1 - i],
                              enc_kernel=enc_kernel, dec_kernel=dec_kernel, block_layers=block_layers,
-                             res_layers=res_layers, se=se, skip_type=skip_type, type=type, cSE_ratio=cSE_ratio)
+                             res_layers=res_layers, se=se, skip_type=skip_type, cSE_ratio=cSE_ratio)
 
     o = Conv2D(filters=output_channels, kernel_size=(1, 1), strides=(1, 1), activation="softmax")(x)
 
     arch_params = "{:d}F, {:d}P, {:d}C, {:d}R".format(start_neurons, pool_layers, block_layers, res_layers, pool) + ", " + \
-                  str(enc_kernel) + "-" + str(dec_kernel) + "K" + "_" + type + " convs" + "_" + pool + " pooling"
+                  str(enc_kernel) + "-" + str(dec_kernel) + "K" + "_" + "_" + pool + " pooling"
 
     if pool == 'pyramid' or pool == 'pyramid_max' or pool == 'pyramid_avg':
         arch_params += "_bins" + str(pyramid_bin_sizes) + "_red_factors" + str(pyramid_reduction_factors)
 
     if se is None:
-        model_desc = "Residual U-net " + type + " (" + arch_params + ") {:d}class".format(output_channels)
+        model_desc = "Residual U-net " + " (" + arch_params + ") {:d}class".format(output_channels)
     else:
         if se == 'sSE':
-            model_desc = "Residual U-net " + type + " (" + arch_params + ", " + se + ") {:d}class".format(output_channels)
+            model_desc = "Residual U-net " + " (" + arch_params + ", " + se + ") {:d}class".format(output_channels)
         else:
-            model_desc = "Residual U-net " + type + " (" + arch_params + ", " + se + "_r=" + str(cSE_ratio) + ") {:d}class".format(output_channels)
+            model_desc = "Residual U-net " + " (" + arch_params + ", " + se + "_r=" + str(cSE_ratio) + ") {:d}class".format(output_channels)
 
     model_desc_short = "Residual U-net"
 

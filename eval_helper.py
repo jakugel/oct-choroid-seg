@@ -1011,7 +1011,7 @@ def calc_dice(eval_params, predictions, labels):
         low = 0
         high = predictions.shape[2]
 
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         dices = soft_dice_numpy(predictions[:, :, low:high, :],
                                             np.transpose(labels, axes=(0, 3, 1, 2))[:, :, low:high, :])
     else:
@@ -1022,7 +1022,7 @@ def calc_dice(eval_params, predictions, labels):
 
 def perform_argmax(predictions, ensemble, bin=True):
     if not ensemble:
-        if K.image_dim_ordering() == 'tf':
+        if K.image_data_format() == 'channels_last':
             pass
         else:
             predictions = np.transpose(predictions, (0, 2, 3, 1))
@@ -1042,7 +1042,7 @@ def perform_argmax(predictions, ensemble, bin=True):
         categorical_pred = []
 
         for i in range(len(predictions)):
-            if K.image_dim_ordering() == 'tf':
+            if K.image_data_format() == 'channels_last':
                 pass
             else:
                 predictions[i] = np.transpose(predictions[i], (0, 2, 3, 1))

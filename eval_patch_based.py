@@ -82,6 +82,17 @@ def evaluate_patch_based_network(eval_params, imdb):
 
             start_predict_time = time.time()
 
+            import keras
+            class CustomCallback(keras.callbacks.Callback):
+                def __init__(self, gen):
+                    keras.callbacks.Callback.__init__(self)
+                    self.gen = gen
+
+                def on_predict_begin(self, logs=None):
+                    self.gen.batch_gen.batch_counter = 0
+                    self.gen.batch_gen.full_counter = 0
+                    self.gen.batch_gen.aug_counter = 0
+
             if not eval_params.ensemble:
                 start_gen_time = time.time()
                 gen = data_generator.DataGenerator(patch_imdb, eval_params.batch_size, aug_fn_args=[],
@@ -91,9 +102,9 @@ def evaluate_patch_based_network(eval_params, imdb):
                 end_gen_time = time.time()
                 gen_time = end_gen_time - start_gen_time
 
-
-                predicted_labels = eval_params.loaded_model.predict_generator(gen,
-                                                                              verbose=eval_params.predict_verbosity)
+                cust_callback = CustomCallback(gen)
+                predicted_labels = eval_params.loaded_model.predict_generator(gen, verbose=eval_params.predict_verbosity, callbacks=[cust_callback])
+                print(predicted_labels.shape)
             else:
                 predicted_labels = []
 
@@ -106,8 +117,7 @@ def evaluate_patch_based_network(eval_params, imdb):
                     end_gen_time = time.time()
                     gen_time = end_gen_time - start_gen_time
 
-                    predicted_labels.append(eval_params.loaded_models[i].predict_generator(gen,
-                                                                                         verbose=eval_params.predict_verbosity))
+                    predicted_labels.append(eval_params.loaded_models[i].predict_generator(gen, verbose=eval_params.predict_verbosity))
 
             end_predict_time = time.time()
             predict_time = end_predict_time - start_predict_time

@@ -11,7 +11,7 @@ from keras import backend as K
 def cifar_cnn(output_channels, img_width, img_height):
     # initialize model
     model = Sequential()
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         model.add(ZeroPadding2D(padding=((2, 2), (2, 2)), input_shape=(img_width, img_height, 1)))
     else:
         model.add(ZeroPadding2D(padding=((2, 2), (2, 2)), input_shape=(1, img_width, img_height)))
@@ -31,12 +31,18 @@ def cifar_cnn(output_channels, img_width, img_height):
     model.add(ZeroPadding2D(padding=((0, 1), (0, 1))))
     model.add(AveragePooling2D(pool_size=(3, 3), strides=(2, 2)))
 
-    cur_shape = model.get_output_shape_at(-1)
+    # model.build()
+    # model.summary()
 
-    if K.image_dim_ordering() == 'tf':
-        model.add(Conv2D(64, kernel_size=(cur_shape[1], cur_shape[2]), activation='relu'))
+    # model(Input((img_width, img_height, 1)))
+
+    # cur_shape = model.get_output_shape_at(-1)
+    # cur_shape = model.layers[-1]._keras_shape
+
+    if K.image_data_format() == 'channels_last':
+        model.add(Conv2D(64, kernel_size=(int(img_width / 8), int(img_height / 8)), activation='relu'))
     else:
-        model.add(Conv2D(64, kernel_size=(cur_shape[2], cur_shape[3]), activation='relu'))
+        model.add(Conv2D(64, kernel_size=(int(img_width / 8), int(img_height / 8)), activation='relu'))
 
     model.add(Flatten())
     model.add(Dense(output_channels, activation='softmax'))
@@ -50,7 +56,7 @@ def cifar_cnn(output_channels, img_width, img_height):
 
 def complex_cnn(output_channels, img_width, img_height):
     model = Sequential()
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         model.add(Conv2D(32, kernel_size=(5, 5), strides=(1, 1), activation='relu',
                          input_shape=(img_width, img_height, 1)))
     else:
@@ -66,9 +72,13 @@ def complex_cnn(output_channels, img_width, img_height):
     model.add(ZeroPadding2D(padding=(1, 1)))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
+    # model.build()
+    # model.summary()
+    model(Input((img_width, img_height, 1)))
+
     cur_shape = model.get_output_shape_at(-1)
 
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         model.add(Conv2D(128, kernel_size=(cur_shape[1], cur_shape[2]), activation=None))
     else:
         model.add(Conv2D(128, kernel_size=(cur_shape[2], cur_shape[3]), activation=None))
@@ -95,7 +105,7 @@ def complex_cnn(output_channels, img_width, img_height):
 def rnn_stack(num_layers, dirs, bidirs, cell_funcs, dropouts, p_widths, p_heights, filters, dense, dense_size,
         input_ch, input_width, input_height, out_classes, output_layers=True):
     # shape: (batchsize, channels, height, width)
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         x = Input(batch_shape=(None, input_width, input_height, input_ch))
         batch_norm_axis = -1
     else:
@@ -122,7 +132,7 @@ def rnn_stack(num_layers, dirs, bidirs, cell_funcs, dropouts, p_widths, p_height
         output = single_rnn(norm, n_patchesW, n_patchesH, p_width, p_height, patch_size, filters[layer_ind],
                             dirs[layer_ind], bidirs[layer_ind], cell_funcs[layer_ind], dropouts[layer_ind])
 
-        if K.image_dim_ordering() == 'tf':
+        if K.image_data_format() == 'channels_last':
             _, w, h, c = int_shape(output)
         else:
             _, c, w, h = int_shape(output)
@@ -171,7 +181,7 @@ def single_rnn(x, n_patchesW, n_patchesH, p_width, p_height, patch_size, filters
         lr = cell_func(filters, input_shape=output_shape, return_sequences=True)(x_patch_seqs)
         out_filters = filters
 
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         lr_reshape = Lambda(transform_rnn_output, output_shape=(n_patchesW, n_patchesH, out_filters),
                             arguments={'n_patchesW': n_patchesW, 'n_patchesH': n_patchesH, 'filters': int(out_filters / 2),
                                        'transpose': transpose})(lr)
@@ -193,7 +203,7 @@ def transform_rnn_input(x, p_height, p_width, transpose):
     from keras.backend import reshape, permute_dimensions, int_shape
     import keras.backend as K
 
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         channels_first = False
     else:
         channels_first = True
@@ -269,7 +279,7 @@ def transform_rnn_output(x, n_patchesH, n_patchesW, filters, transpose):
     from keras.backend import reshape, permute_dimensions
     import keras.backend as K
 
-    if K.image_dim_ordering() == 'tf':
+    if K.image_data_format() == 'channels_last':
         channels_first = False
     else:
         channels_first = True

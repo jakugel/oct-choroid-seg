@@ -76,11 +76,11 @@ def save_cur_trainval_plot(acc_name, loss_name, network_name,
 
 def setup_image_plot(image, cmap, vmin=None, vmax=None):
     if image.ndim == 3:
-        if K.image_dim_ordering() == 'tf':
+        if K.image_data_format() == 'channels_last':
             image_width, image_height = image.shape[:-1]
             if image.shape[2] == 1:
                 image = image[:, :, 0]
-        elif K.image_dim_ordering == 'th':
+        elif K.image_data_format == 'channels_first':
             image_width, image_height = image.shape[1:]
             if image.shape[0] == 1:
                 image = image[0, :, :]

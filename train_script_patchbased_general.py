@@ -5,11 +5,13 @@ import image_database as imdb
 import patch_based_network_models as patch_models
 import dataset_construction
 from keras.layers.cudnn_recurrent import CuDNNLSTM, CuDNNGRU
+import h5py
 
-keras.backend.set_image_dim_ordering('tf')
+keras.backend.set_image_data_format('channels_last')
 
 INPUT_CHANNELS = 1
-DATASET_NAME = "mydatapatches"     # can choose a name if desired
+DATASET_NAME = "myexampledata"     # can choose a name if desired
+DATASET_FILE = h5py.File("example_data.hdf5", 'r')
 PATCH_SIZE = (32, 32)       # modify depending on desired patch size
 
 # images numpy array should be of the shape: (number of images, image width, image height, 1)
@@ -18,12 +20,19 @@ PATCH_SIZE = (32, 32)       # modify depending on desired patch size
 
 # fill in this function to load your data for the training set with format/shape given above
 def load_training_data():
-    return #images, segs
+    # FILL IN THIS FUNCTION TO LOAD YOUR DATA
+    train_images = DATASET_FILE['train_images'][:]
+    train_segs = DATASET_FILE['train_segs'][:]
 
+    return train_images, train_segs
 
 # fill in this function to load your data for the validation set with format/shape given above
 def load_validation_data():
-    return #images, segs
+    # FILL IN THIS FUNCTION TO LOAD YOUR DATA
+    val_images = DATASET_FILE['val_images'][:]
+    val_segs = DATASET_FILE['val_segs'][:]
+
+    return val_images, val_segs
 
 
 train_images, train_segs = load_training_data()
@@ -56,6 +65,6 @@ metric = keras.metrics.categorical_accuracy
 epochs = 100
 batch_size = 1024
 
-train_params = tparams.TrainingParams(model_rnn, opt_con, opt_params, loss, metric, epochs, batch_size, model_save_best=True)
+train_params = tparams.TrainingParams(model_complex, opt_con, opt_params, loss, metric, epochs, batch_size, model_save_best=True)
 
 training.train_network(train_patch_imdb, val_patch_imdb, train_params)

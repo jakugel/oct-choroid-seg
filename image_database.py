@@ -148,10 +148,10 @@ class ImageDatabase:
         elif b is not None:
             images = fileimages[self.start_image_ind:self.end_image_ind + b]
 
-        if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+        if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
             images = np.transpose(images, axes=(0, 2, 3, 1))
 
-        elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+        elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
             images = np.transpose(images, axes=(0, 3, 1, 2))
 
         if self.padding is not None:
@@ -182,10 +182,10 @@ class ImageDatabase:
             labels = filelabels[self.start_image_ind:self.start_image_ind + b]
 
         if self.type == "fullsize":
-            if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+            if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                 labels = np.transpose(labels, axes=(0, 2, 3, 1))
 
-            elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+            elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                 labels = np.transpose(labels, axes=(0, 3, 1, 2))
 
             if self.padding is not None:
@@ -209,10 +209,10 @@ class ImageDatabase:
             else:
                 images = self.imdb2.get_images_subrange_disk(self.start_image_ind - num_images1, self.end_image_ind - num_images1)
 
-            if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+            if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                 images = np.transpose(images, axes=(0, 2, 3, 1))
 
-            elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+            elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                 images = np.transpose(images, axes=(0, 3, 1, 2))
 
             if self.padding is not None:
@@ -238,10 +238,10 @@ class ImageDatabase:
 
                 images = fileimages[self.start_image_ind:self.end_image_ind]
 
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                     images = np.transpose(images, axes=(0, 2, 3, 1))
 
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                     images = np.transpose(images, axes=(0, 3, 1, 2))
 
                 if self.padding is not None:
@@ -274,10 +274,10 @@ class ImageDatabase:
                     labels = self.imdb2.get_labels_subrange_disk(self.start_image_ind - num_labels1, self.end_image_ind - num_labels1)
 
                 if self.type == "fullsize":
-                    if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                    if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                         labels = np.transpose(labels, axes=(0, 2, 3, 1))
 
-                    elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                    elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                         labels = np.transpose(labels, axes=(0, 3, 1, 2))
 
                     if self.padding is not None:
@@ -295,10 +295,10 @@ class ImageDatabase:
 
                     labels = filelabels[self.start_image_ind:self.end_image_ind]
                     if self.type == "fullsize":
-                        if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                        if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                                 labels = np.transpose(labels, axes=(0, 2, 3, 1))
 
-                        elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                        elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                                 labels = np.transpose(labels, axes=(0, 3, 1, 2))
 
                         if self.padding is not None:
@@ -321,9 +321,9 @@ class ImageDatabase:
                 filepatchlabels = loadfile["patch_labels"]
 
                 patch_labels = filepatchlabels[self.start_image_ind:self.end_image_ind]
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                         patch_labels = np.transpose(patch_labels, axes=(0, 2, 3, 1))
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                         patch_labels = np.transpose(patch_labels, axes=(0, 3, 1, 2))
 
                 if self.padding is not None:
@@ -363,10 +363,10 @@ class ImageDatabase:
             else:
                 image = self.imdb2.get_image_range(ind + self.start_image_ind - num_images1)
 
-            if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+            if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                 image = np.transpose(image, axes=(1, 2, 0))
 
-            elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+            elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                 image = np.transpose(image, axes=(2, 0, 1))
 
             if self.padding is not None:
@@ -392,10 +392,10 @@ class ImageDatabase:
 
                 image = fileimages[ind + self.start_image_ind]
 
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                     image = np.transpose(image, axes=(1, 2, 0))
 
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                     image = np.transpose(image, axes=(2, 0, 1))
 
                 if self.padding is not None:
@@ -423,9 +423,9 @@ class ImageDatabase:
                 filepatchlabels = loadfile["patch_labels"]
 
                 patch_label = filepatchlabels[ind]
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                         patch_label = np.transpose(patch_label, axes=(1, 2, 0))
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                         patch_label = np.transpose(patch_label, axes=(2, 0, 1))
 
                 if self.padding is not None:
@@ -446,9 +446,9 @@ class ImageDatabase:
                 filepatchlabels = loadfile["patch_labels"]
 
                 patch_label = filepatchlabels[ind + self.start_image_ind]
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                     patch_label = np.transpose(patch_label, axes=(1, 2, 0))
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                     patch_label = np.transpose(patch_label, axes=(2, 0, 1))
 
                 if self.padding is not None:
@@ -469,10 +469,10 @@ class ImageDatabase:
             else:
                 image = self.imdb2.get_image(ind - num_images1)
 
-            if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+            if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                 image = np.transpose(image, axes=(1, 2, 0))
 
-            elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+            elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                 image = np.transpose(image, axes=(2, 0, 1))
 
             if self.padding is not None:
@@ -497,10 +497,10 @@ class ImageDatabase:
 
                 image = fileimages[ind]
 
-                if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                     image = np.transpose(image, axes=(1, 2, 0))
 
-                elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                     image = np.transpose(image, axes=(2, 0, 1))
 
                 if self.padding is not None:
@@ -532,9 +532,9 @@ class ImageDatabase:
                     label = self.imdb2.get_label(ind - num_labels1)
 
                 if self.type == "fullsize":
-                    if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                    if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                         label = np.transpose(label, axes=(1, 2, 0))
-                    elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                    elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                         label = np.transpose(label, axes=(2, 0, 1))
 
                     if self.padding is not None:
@@ -552,9 +552,9 @@ class ImageDatabase:
 
                     label = filelabels[ind]
                     if self.type == "fullsize":
-                        if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                        if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                                 label = np.transpose(label, axes=(1, 2, 0))
-                        elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                        elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                                 label = np.transpose(label, axes=(2, 0, 1))
 
                         if self.padding is not None:
@@ -579,9 +579,9 @@ class ImageDatabase:
                     label = self.imdb2.get_label_range(ind + self.image_range - num_labels1)
 
                 if self.type == "fullsize":
-                    if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                    if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                         label = np.transpose(label, axes=(1, 2, 0))
-                    elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                    elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                         label = np.transpose(label, axes=(2, 0, 1))
 
                     if self.padding is not None:
@@ -599,9 +599,9 @@ class ImageDatabase:
 
                     label = filelabels[ind + self.start_image_ind]
                     if self.type == "fullsize":
-                        if K.image_dim_ordering() == 'tf' and self.dim_ordering == 'channels_first':
+                        if K.image_data_format() == 'channels_last' and self.dim_ordering == 'channels_first':
                             label = np.transpose(label, axes=(1, 2, 0))
-                        elif K.image_dim_ordering() == 'th' and self.dim_ordering == 'channels_last':
+                        elif K.image_data_format() == 'channels_first' and self.dim_ordering == 'channels_last':
                             label = np.transpose(label, axes=(2, 0, 1))
 
                         if self.padding is not None:

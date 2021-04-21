@@ -509,10 +509,10 @@ def create_all_area_masks(images, segs):
 # first pixel of their corresponding regions (in a top to bottom sense)
 def create_area_mask(image, segs):
     if image.ndim == 3:
-        if K.image_dim_ordering() == 'tf':
+        if K.image_data_format() == 'channels_last':
             mask_shape = image.shape[:-1]
 
-        elif K.image_dim_ordering() == 'th':
+        elif K.image_data_format() == 'channels_first':
             mask_shape = image.shape[1:]
     else:
         mask_shape = image.shape
@@ -522,9 +522,9 @@ def create_area_mask(image, segs):
     image_height = mask_shape[1]
 
     if image.ndim == 3:
-        if K.image_dim_ordering() == 'tf':
+        if K.image_data_format() == 'channels_last':
             mask = np.expand_dims(mask, axis=-1)
-        elif K.image_dim_ordering() == 'th':
+        elif K.image_data_format() == 'channels_first':
             mask = np.expand_dims(mask, axis=0)
 
     segs = np.array(segs)

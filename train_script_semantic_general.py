@@ -8,11 +8,13 @@ import custom_metrics
 import dataset_construction
 from keras.utils import to_categorical
 import augmentation as aug
+import h5py
 
-keras.backend.set_image_dim_ordering('tf')
+keras.backend.set_image_data_format('channels_last')
 
 INPUT_CHANNELS = 1
-DATASET_NAME = "mydata"     # can choose a name if desired
+DATASET_NAME = "exampledata"     # can choose a name if desired
+DATASET_FILE = h5py.File("example_data.hdf5", 'r')
 
 # images numpy array should be of the shape: (number of images, image width, image height, 1)
 # segs numpy array should be of the shape: (number of images, number of boundaries, image width)
@@ -21,12 +23,19 @@ DATASET_NAME = "mydata"     # can choose a name if desired
 # fill in this function to load your data for the training set with format/shape given above
 def load_training_data():
     # FILL IN THIS FUNCTION TO LOAD YOUR DATA
-    return #images, segs
+    train_images = DATASET_FILE['train_images'][:]
+    train_segs = DATASET_FILE['train_segs'][:]
+
+    return train_images, train_segs
 
 # fill in this function to load your data for the validation set with format/shape given above
 def load_validation_data():
     # FILL IN THIS FUNCTION TO LOAD YOUR DATA
-    return  # images, segs
+    val_images = DATASET_FILE['val_images'][:]
+    val_segs = DATASET_FILE['val_segs'][:]
+
+    return val_images, val_segs
+
 
 train_images, train_segs = load_training_data()
 val_images, val_segs = load_validation_data()
@@ -53,7 +62,7 @@ opt_con = keras.optimizers.Adam
 opt_params = {}     # default params
 loss = custom_losses.dice_loss
 metric = custom_metrics.dice_coef
-epochs = 100
+epochs = 10000
 batch_size = 3
 
 aug_fn_args = [(aug.no_aug, {}), (aug.flip_aug, {'flip_type': 'left-right'})]

@@ -8,8 +8,10 @@ import image_database as imdb
 import dataset_construction
 import parameters
 from keras.utils import to_categorical
+import h5py
 
 TEST_DATA_NAME = "mytestdata"   # can choose a name if desired
+DATASET_FILE = h5py.File("example_data.hdf5", 'r')
 
 # segs are true boundary positions for each image
 
@@ -22,7 +24,12 @@ TEST_DATA_NAME = "mytestdata"   # can choose a name if desired
 # for each image by passing the image and its correspondings segs as arguments
 def load_testing_data():
     # FILL IN THIS FUNCTION TO LOAD YOUR DATA
-    return #images, segs, image_names
+    test_images = DATASET_FILE['test_images'][:]
+    test_segs = DATASET_FILE['test_segs'][:]
+    test_image_names = ['image_1', 'image_2', 'image_3']
+
+    return test_images, test_segs, test_image_names
+
 
 test_images, test_segs, test_image_names = load_testing_data()
 
@@ -45,8 +52,8 @@ eval_imdb = imdb.ImageDatabase(images=test_images, labels=test_labels, segs=test
                                boundary_names=BOUNDARY_NAMES, area_names=AREA_NAMES,
                                fullsize_class_names=AREA_NAMES, num_classes=NUM_CLASSES, name=TEST_DATA_NAME, filename=TEST_DATA_NAME, mode_type='fullsize')
 
-network_folder = parameters.RESULTS_LOCATION + "\\2020-09-02 15_40_59 U-net mydata\\" # name of network folder for which to evaluate model
-model_name = "model_epoch03.hdf5"   # name of model file inside network folder to evaluate
+network_folder = parameters.RESULTS_LOCATION + "\\2021-04-21 12_28_48 U-net exampledata\\" # name of network folder for which to evaluate model
+model_name = "model_epoch635.hdf5"   # name of model file inside network folder to evaluate
 
 loaded_model = load_model(network_folder + "/" + model_name, custom_objects=CUSTOM_OBJECTS)
 

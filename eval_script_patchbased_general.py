@@ -7,9 +7,10 @@ from keras.models import load_model
 import image_database as imdb
 import dataset_construction
 import parameters
+import h5py
 
-
-TEST_DATA_NAME = "mytestdata"   # can choose a name if desired
+TEST_DATA_NAME = "myexampledata"   # can choose a name if desired
+DATASET_FILE = h5py.File("example_data.hdf5", 'r')
 
 # segs are true boundary positions for each image
 
@@ -19,7 +20,10 @@ TEST_DATA_NAME = "mytestdata"   # can choose a name if desired
 
 def load_testing_data():
     # FILL IN THIS FUNCTION TO LOAD YOUR DATA
-    return #images, segs, image_names
+    test_images = DATASET_FILE['test_images'][:]
+    test_segs = DATASET_FILE['test_segs'][:]
+    test_image_names = ['image_1', 'image_2', 'image_3']
+    return test_images, test_segs, test_image_names
 
 
 test_images, test_segs, test_image_names = load_testing_data()
@@ -44,8 +48,8 @@ eval_imdb = imdb.ImageDatabase(images=test_images, labels=None, patch_labels=tes
                                fullsize_class_names=AREA_NAMES, patch_class_names=PATCH_CLASS_NAMES, num_classes=NUM_CLASSES, name=TEST_DATA_NAME, filename=TEST_DATA_NAME, mode_type='fullsize')
 
 batch_size = 992    # CURRENTLY THIS NEEDS TO BE CHOSEN AS A VALUE WHICH IS A FACTOR OF THE AREA (IN PIXELS) OF THE FULL IMAGE (i.e. 992 is a factor of a 761856 (1536x496) pixel image [992 x 768 = 761856])
-network_folder = parameters.RESULTS_LOCATION + "\\2020-03-10 14_25_08 Cifar CNN 32x32 stargardt_girard_patches_fold1\\" # name of network folder for which to evaluate model
-model_name = "model_epoch04.hdf5"   # name of model file inside network folder to evaluate
+network_folder = parameters.RESULTS_LOCATION + "\\2021-04-21 14_35_20 Complex CNN 32x32 myexampledata\\" # name of network folder for which to evaluate model
+model_name = "model_epoch06.hdf5"   # name of model file inside network folder to evaluate
 
 loaded_model = load_model(network_folder + "/" + model_name, custom_objects=CUSTOM_OBJECTS)
 
