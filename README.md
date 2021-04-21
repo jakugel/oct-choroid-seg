@@ -10,7 +10,7 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
 * numpy
 
 # Training a model (patch-based)
-1. Modify *load_training_data* and *load_validation_data* functions in *train_script_patchbased_general.py* to load your training and validation data (see comments in code).
+1. Modify *load_training_data* and *load_validation_data* functions in *train_script_patchbased_general.py* to load your training and validation data (see comments in code). [see example data file and load functions]
 2. Choose one of the following and pass as first training parameter as shown in code:
     * *model_cifar* (Cifar CNN)
     * *model_complex* (Complex CNN)
@@ -24,7 +24,7 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
     * one or more *model_epoch&.hdf5* files containing the saved model at each epoch &
   
 # Training a model (semantic)
-1. Modify *load_training_data* and *load_validation_data* functions in *train_script_semantic_general.py* to load your training and validation data (see comments in code).
+1. Modify *load_training_data* and *load_validation_data* functions in *train_script_semantic_general.py* to load your training and validation data (see comments in code). [see example data file and load functions]
 2. Choose one of the following and pass as first training parameter as shown in code:
     * *model_residual* (Residual U-Net)
     * *model_standard* (Standard U-Net) [default]
@@ -40,14 +40,14 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
     * one or more *model_epoch&.hdf5* files containing the saved model at each epoch &
   
 # Evaluating a model (patch-based)
-1. Modify *load_testing_data* function in *eval_script_patchbased_general.py* to load your testing data (see comments in code).
+1. Modify *load_testing_data* function in *eval_script_patchbased_general.py* to load your testing data (see comments in code). [see example data file and load function]
 2. Specify trained network folder to evaluate.
 3. Specify filename of model to evaluate within the chosen folder: *model_epoch&.hdf5*
 4. Run *eval_script_patchbased_general.py*
 5. Evaluation results will be saved in a new folder (with the name *no_aug_<DATASET_NAME>.hdf5*) within the specified trained network folder. Within this, a folder is created for each evaluated image containing a range of .png images illustrating the results qualitatively as well as an *evaluations.hdf5* file with all quantitative results. A new *config.hdf5* file is created in the new folder as well as *results.hdf5* and *results.csv* files summarising the overall results after all images have been evaluated.
   
 # Evaluating a model (semantic)
-1. Modify *load_testing_data* function in *eval_script_semantic_general.py* to load your testing data (see comments in code).
+1. Modify *load_testing_data* function in *eval_script_semantic_general.py* to load your testing data (see comments in code). [see example data file and load function]
 2. Specify trained network folder to evaluate.
 3. Specify filename of model to evaluate within the chosen folder: *model_epoch&.hdf5*
 4. Run *eval_script_semantic_general.py*
