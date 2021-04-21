@@ -1,6 +1,10 @@
 # oct-choroid-seg
 Code for the paper "Automatic choroidal segmentation in OCT images using supervised deep learning methods"
 
+Link: https://www.nature.com/articles/s41598-019-49816-4
+
+If the code and methods here are useful to you and aided in your research, please consider citing the paper.
+
 # Dependencies
 * Python 3.6.4
 * Keras 2.4.3
