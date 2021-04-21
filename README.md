@@ -3,8 +3,8 @@ Code for the paper "Automatic choroidal segmentation in OCT images using supervi
 
 # Dependencies
 * Python 3.6.4
-* Keras 2.2.4
-* tensorflow-gpu 1.8.0
+* Keras 2.4.3
+* tensorflow 2.3.1
 * h5py
 * Matplotlib
 * numpy
